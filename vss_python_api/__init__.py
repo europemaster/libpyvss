@@ -211,7 +211,7 @@ class ApiDeclarations:
 
     # #       HTTP BACKEND
     # # --------------------------------------------------------------
-    # def set_http(self, uuid, img):
-    #     r = requests.put(self.url + 'backend/' + uuid, headers=self.calc_auth('backend/' + uuid, "PUT", uuid, True), files=img)
-    #     return r.status_code
-    # # --------------------------------------------------------------
+    def set_http(self, uuid, img):
+        r = requests.put(self.url + 'backend/' + uuid, headers=self.calc_auth('backend/' + uuid, "PUT", uuid, True), files=img)
+        return r.status_code
+    # --------------------------------------------------------------
