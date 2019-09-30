@@ -1,5 +1,4 @@
 import unittest
-
 from vss_python_api import ApiDeclarations
 
 my_api = ApiDeclarations("http://192.168.101.169:8081/", "7bd395a74c47fa6b", "i9ygSVooI+/d1sobATE9jUDpanMpyEByPPMavcd8+Gk")
@@ -124,8 +123,10 @@ class MyTest(unittest.TestCase):
     #     self.assertEqual(sc, 200)
 
     def test_set_http(self):
-        f = (open('snamp.png', 'rb')).read()
-        fr = {'image': f}
-        # f = {'file': ('snamp.png', open('snamp.png', 'rb'), 'multipart/form-data', {'Expires': '0'})}
-        sc = my_api.set_http(uuid, fr)
+        # f = (open('snamp.png', 'rb')).read()
+        fr = {'image': open('snamp.png', 'rb')}
+        print(fr)
+        # fr = {'image': ('snamp.png', open('snamp.png', 'rb'), 'multipart/form-data')}
+        sc, r = my_api.set_http(uuid, fr)
+        print(sc, r)
         self.assertEqual(sc, 200)

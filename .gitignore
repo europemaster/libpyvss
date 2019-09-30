@@ -6,3 +6,4 @@ vss_python_api.egg-info/*
 convert.sh
 .cache/
 setup.cfg
+use_lib.py

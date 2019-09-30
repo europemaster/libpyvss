@@ -19,12 +19,12 @@ class ApiDeclarations:
             'Content-Type': 'application/json'
         }
 
-        if uid is not None:
-            h = hmac.new(self.secret, verb + '\n\n' + headers['Content-Type'] + '\n' + headers['Date'] + '\n/' + endpoint + uid, hashlib.sha256)
+        if multipart is not False:
+            h = hmac.new(self.secret, verb + '\n\n' + 'multipart/form-data' + '\n' + headers['Date'] + '\n/' + endpoint + uid, hashlib.sha256)
             headers['Authorization'] = self.key + ':' + base64.encodestring(h.digest()).strip()
 
-        elif multipart is not False:
-            h = hmac.new(self.secret, verb + '\n\n' + 'multipart/form-data' + '\n' + headers['Date'] + '\n/' + endpoint + uid, hashlib.sha256)
+        elif uid is not None:
+            h = hmac.new(self.secret, verb + '\n\n' + headers['Content-Type'] + '\n' + headers['Date'] + '\n/' + endpoint + uid, hashlib.sha256)
             headers['Authorization'] = self.key + ':' + base64.encodestring(h.digest()).strip()
 
         else:
@@ -209,9 +209,17 @@ class ApiDeclarations:
 
     # --------------------------------------------------------------
 
+    #       DEVICE STATUS
+    # --------------------------------------------------------------
+    def get_device_status(self, uuid ):
+        r = requests.get(self.url + 'api/devicestatus/' + uuid , headers=self.calc_auth("api/status/", "GET"))
+        return r.status_code, r.json()
+
+    # --------------------------------------------------------------
+
     # #       HTTP BACKEND
     # # --------------------------------------------------------------
     def set_http(self, uuid, img):
-        r = requests.put(self.url + 'backend/' + uuid, headers=self.calc_auth('backend/' + uuid, "PUT", uuid, True), files=img)
-        return r.status_code
+        r = requests.put(self.url + 'backend/' + uuid, headers=self.calc_auth('backend/', 'PUT', uuid, True), data=img)
+        return r.status_code, r.headers['content-type']
     # --------------------------------------------------------------
